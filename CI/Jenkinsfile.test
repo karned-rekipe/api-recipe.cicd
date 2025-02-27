@@ -108,18 +108,18 @@ spec:
                             env.FAILURES = testResults[1]
                             env.ERRORS = testResults[2]
 
-                            sh '''
+sh '''
 pip install --disable-pip-version-check --no-cache-dir requests
 python -c "import os, requests;
 webhook = os.getenv('SLACK_WEBHOOK_URL');
-
+api_name = os.getenv('API_NAME');
 message = {
-    'text': f'${env.API_NAME} - Tests: {os.getenv(\"TOTAL_TESTS\")} Failures: {os.getenv(\"FAILURES\")} Errors: {os.getenv(\"ERRORS\")}',
+    'text': f'{api_name} - Tests: {os.getenv(\"TOTAL_TESTS\")} Failures: {os.getenv(\"FAILURES\")} Errors: {os.getenv(\"ERRORS\")}',
     'username': 'Jenkins Bot',
     'icon_emoji': ':rocket:'
 };
 requests.post(webhook, json=message)"
-                            '''
+'''
                         }
                     }
                 }
