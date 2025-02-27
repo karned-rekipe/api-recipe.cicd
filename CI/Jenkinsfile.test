@@ -104,7 +104,7 @@ spec:
                     withCredentials([string(credentialsId: 'SLACK_WEBHOOK_URL', variable: 'SLACK_WEBHOOK_URL')]) {
                         script {
                             def testResults = readFile('test_results.txt').trim().split(':')
-                            env.TOTAL_TESTS = testResults[0]
+                            env.TOTAL = testResults[0]
                             env.FAILURES = testResults[1]
                             env.ERRORS = testResults[2]
 
@@ -113,8 +113,11 @@ pip install --disable-pip-version-check --no-cache-dir requests
 python -c "import os, requests;
 webhook = os.getenv('SLACK_WEBHOOK_URL');
 api_name = os.getenv('API_NAME');
+total = os.getenv('TOTAL');
+failures = os.getenv('FAILURES');
+errors = os.getenv('ERRORS');
 message = {
-    'text': f'{api_name} - Tests: {os.getenv(\"TOTAL_TESTS\")} Failures: {os.getenv(\"FAILURES\")} Errors: {os.getenv(\"ERRORS\")}',
+    'text': f'{api_name} - Tests: {total} Failures: {failures} Errors: {errors}',
     'username': 'Jenkins Bot',
     'icon_emoji': ':rocket:'
 };

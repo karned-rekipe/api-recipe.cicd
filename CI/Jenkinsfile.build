@@ -39,7 +39,7 @@ spec:
             steps {
                 script {
                     env.DOCKER_TAG = sh(
-                        script: "curl -s ${params.URL_VERSION}",
+                        script: "curl -s ${env.URL_VERSION}",
                         returnStdout: true
                     ).trim()
                 }
@@ -49,7 +49,7 @@ spec:
 
         stage('Clone Repository') {
             steps {
-                git branch: "${params.GITHUB_BRANCH}", url: "${params.URL_REPO}"
+                git branch: "${params.GITHUB_BRANCH}", url: "${env.URL_REPO}"
             }
         }
 
@@ -57,12 +57,12 @@ spec:
             steps {
                 container('python') {
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh '''
+sh '''
 python -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
 pytest
-                    '''
+'''
                     }
                 }
             }
