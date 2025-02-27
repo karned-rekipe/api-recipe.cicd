@@ -109,17 +109,12 @@ spec:
                             env.ERRORS = testResults[2]
 
                             sh '''
-                            pip install requests
-                            python -c "
-                            import os, requests
-                            webhook = os.getenv('SLACK_WEBHOOK_URL')
-                            message = {
-                                'text': f'${API_NAME} - Tests: {os.getenv("TOTAL_TESTS")} Failures: {os.getenv("FAILURES")} Errors: {os.getenv("ERRORS")}',
-                                'username': 'Jenkins Bot',
-                                'icon_emoji': ':rocket:'
-                            }
-                            requests.post(webhook, json=message)
-                            "
+pip install --disable-pip-version-check --no-cache-dir requests
+python -c "import os, requests;
+webhook = os.getenv('SLACK_WEBHOOK_URL');
+message = {'text': f'api-recipe - Tests: {os.getenv(\"TOTAL_TESTS\")} Failures: {os.getenv(\"FAILURES\")} Errors: {os.getenv(\"ERRORS\")}',
+'username': 'Jenkins Bot', 'icon_emoji': ':rocket:'};
+requests.post(webhook, json=message)"
                             '''
                         }
                     }
