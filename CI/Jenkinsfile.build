@@ -90,5 +90,28 @@ pytest
                 }
             }
         }
+
+        stage('Send Slack Message') {
+            steps {
+                container('python') {
+                    withCredentials([string(credentialsId: 'SLACK_WEBHOOK_URL', variable: 'SLACK_WEBHOOK_URL')]) {
+                        script {
+                            sh '''
+                            pip install --disable-pip-version-check --no-cache-dir requests
+                            python -c "import os, requests;
+webhook = os.getenv('SLACK_WEBHOOK_URL');
+api_name = os.getenv('API_NAME');
+message = {
+    'text': f'{api_name} - build success',
+    'username': 'Jenkins Bot',
+    'icon_emoji': ':rocket:'
+};
+requests.post(webhook, json=message)"
+                            '''
+                        }
+                    }
+                }
+            }
+        }
     }
 }
