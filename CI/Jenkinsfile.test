@@ -27,8 +27,6 @@ spec:
 
     environment {
         API_NAME = 'api-recipe'
-        DOCKER_IMAGE = 'killiankopp/api-recipe'
-        DOCKER_TAG = '1.0.0'
         URL_REPO = 'https://github.com/karned-rekipe/api-recipe.git'
         BRANCH_NAME = "${env.BRANCH_NAME ?: 'main'}"
     }
@@ -87,9 +85,9 @@ spec:
                 container('python') {
                     script {
                         def testReport = readFile('report.xml').trim()
-                        def totalTests = testReport.find(/tests="(\d+)"/)[1]
-                        def failures = testReport.find(/failures="(\d+)"/)[1]
-                        def errors = testReport.find(/errors="(\d+)"/)[1]
+                        def totalTests = (testReport =~ /tests="(\d+)"/)[0][1]
+                        def failures = (testReport =~ /failures="(\d+)"/)[0][1]
+                        def errors = (testReport =~ /errors="(\d+)"/)[0][1]
 
                         echo "Total tests: ${totalTests}, Failures: ${failures}, Errors: ${errors}"
                         writeFile file: 'test_results.txt', text: "${totalTests}:${failures}:${errors}"
@@ -108,9 +106,9 @@ spec:
                             env.FAILURES = testResults[1]
                             env.ERRORS = testResults[2]
 
-sh '''
-pip install --disable-pip-version-check --no-cache-dir requests
-python -c "import os, requests;
+                            sh '''
+                            pip install --disable-pip-version-check --no-cache-dir requests
+                            python -c "import os, requests;
 webhook = os.getenv('SLACK_WEBHOOK_URL');
 api_name = os.getenv('API_NAME');
 total = os.getenv('TOTAL');
@@ -122,7 +120,7 @@ message = {
     'icon_emoji': ':rocket:'
 };
 requests.post(webhook, json=message)"
-'''
+                            '''
                         }
                     }
                 }
