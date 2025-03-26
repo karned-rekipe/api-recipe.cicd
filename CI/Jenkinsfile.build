@@ -100,9 +100,10 @@ pytest
                             pip install --disable-pip-version-check --no-cache-dir requests
                             python -c "import os, requests;
 webhook = os.getenv('SLACK_WEBHOOK_URL');
-api_name = os.getenv('API_NAME');
+docker_image = os.getenv('DOCKER_IMAGE');
+docker_tag = os.getenv('DOCKER_TAG');
 message = {
-    'text': f'{api_name} - build success',
+    'text': f'New version of {docker_image} ({docker_tag}) has been built and pushed to Docker Hub',
     'username': 'Jenkins Bot',
     'icon_emoji': ':rocket:'
 };
