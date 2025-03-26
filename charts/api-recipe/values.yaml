@@ -1,7 +1,11 @@
 NameSpace: karned
 AppName: api-recipe
 
-DockerImage: killiankopp/api-recipe:1.0.1
+DockerImage: killiankopp/api-recipe:1.1.0
+
+Port: 8000
 
 API_NAME: api-recipe
 API_TAG_NAME: recipes
+
+URL_API_GATEWAY: https://api.karned.bzh
