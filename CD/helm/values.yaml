@@ -1,7 +1,7 @@
 NameSpace: karned
 AppName: api-recipe
 
-DockerImage: killiankopp/api-recipe:1.1.0
+DockerImage: killiankopp/api-recipe:1.1.1
 
 Port: 8000
 
